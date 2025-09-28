@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+
+struct Query {
+    int a, b, k;
+};
+
+long arrayManipulation(int n, std::vector<Query> &queries) {
+    std::vector<long long> diff(n + 2, 0);
+
+    for (Query &q : queries) {
+        diff[q.a] += q.k;
+        diff[q.b + 1] -= q.k;
+    }
+
+    long long max_val = 0, current = 0;
+    for (int i = 1; i <= n; i++) {
+        current += diff[i];
+        if (current > max_val) max_val = current;
+    }
+
+    return max_val;
+}
+
+int main() {
+    int n, q;
+    std::cin >> n >> q; 
+
+    std::vector<Query> queries(q);
+
+    for (int i = 0; i < q; i++) {
+        std::cin >> queries[i].a >> queries[i].b >> queries[i].k;
+    }
+
+    std::cout << arrayManipulation(n, queries) << std::endl;
+
+    return 0;
+}
